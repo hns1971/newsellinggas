@@ -509,7 +509,7 @@ public class HandCharge {
 					+ "where f_userid='"
 					+ userid
 					+ "' and lastinputdate>='"
-					+ stardate + "' and lastinputdate<='" + enddate + "'";
+					+ stardate + "' and lastinputdate<'" + enddate + "'";
 			List<Map<String, Object>> gaslist = (List<Map<String, Object>>) hibernateTemplate
 					.execute(new HibernateCallback() {
 						public Object doInHibernate(Session session)
@@ -783,14 +783,18 @@ public class HandCharge {
 	private void CountDate(Calendar cal, int stairmonths) {
 		// 计算当前月在哪个阶梯区间
 		//Calendar cal = Calendar.getInstance();
-		int thismonth = cal.get(Calendar.MONTH) + 1;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		
+		// enddate一定等于传入的日期
+		enddate = format.format(cal.getTime());
+		
+		int thismonth = cal.get(Calendar.MONTH) + 1;
 		if (stairmonths == 1) {
 			cal.set(Calendar.DAY_OF_MONTH, 1);
 			stardate = format.format(cal.getTime());
-			cal.set(Calendar.DAY_OF_MONTH,
-					cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-			enddate = format.format(cal.getTime());
+			//cal.set(Calendar.DAY_OF_MONTH,
+			//		cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+			//enddate = format.format(cal.getTime());
 		} else if (stairmonths == 0) {
 			stardate = "";
 			enddate = "";
@@ -805,16 +809,16 @@ public class HandCharge {
 			// 计算起始月
 			int star = Math.round(thismonth / stairmonths) * stairmonths + 1;
 			// 计算结束月
-			int end = Math.round(thismonth / stairmonths) * stairmonths
-					+ stairmonths;
+			//int end = Math.round(thismonth / stairmonths) * stairmonths
+			//		+ stairmonths;
 			// 获得起始日期和结束日期
 			cal.set(Calendar.MONTH, star - 1);
 			cal.set(Calendar.DAY_OF_MONTH, 1);
 			stardate = format.format(cal.getTime());
-			cal.set(Calendar.MONTH, end - 1);
-			cal.set(Calendar.DAY_OF_MONTH,
-					cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-			enddate = format.format(cal.getTime());
+			//cal.set(Calendar.MONTH, end - 1);
+			//cal.set(Calendar.DAY_OF_MONTH,
+			//		cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+			//enddate = format.format(cal.getTime());
 		}
 	}
 
