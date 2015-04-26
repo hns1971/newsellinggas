@@ -142,6 +142,8 @@
 		<property name="f_times" type="int"/>
 		<!--气价类型-->
 		<property name="f_gaspricetype" type="string"/>
-						 
+
+		<!-- 是否有效：null（有效）, 无效 -->
+		<property name="f_payfeevalid" type="string"/>						 
 </class>
 </hibernate-mapping>
